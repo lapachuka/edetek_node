@@ -1,5 +1,3 @@
-"use strict";
-
 module.exports = function errorHandler(err, req, res, next) {
     const status = err.statusCode || 500;
     const body = {
