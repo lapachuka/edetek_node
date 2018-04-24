@@ -33,22 +33,22 @@ class Department {
     }
 
     async getById({id}) {
+        const departmentPromise = knex(this.tableName)
+            .select()
+            .where('id', id)
+            .first();
 
-        const department = await Promise.all([
-            knex(this.tableName)
-                .select()
-                .where('id', id)
-                .first(),
-            knex(this.employeeTable)
-                .select()
-                .where('department_id', id)
-        ]).then(values => {
-            const resDepartment = values[0];
 
-            resDepartment.employees = values[1];
+        const employeePromise = knex(this.employeeTable)
+            .select()
+            .where('department_id', id);
+        const department = await Promise.all([departmentPromise, employeePromise])
+            .then(values => {
+                const resDepartment = values[0] || {};
+                resDepartment.employees = values[1];
 
-            return resDepartment;
-        });
+                return resDepartment;
+            });
 
         return department || {};
     }
