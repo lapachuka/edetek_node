@@ -40,6 +40,15 @@ module.exports = {
 }
 ```
 
+run migration
+
+```sh
+
+knex migrate:latest
+
+```
+
+
 and start server
 
 ```sh
